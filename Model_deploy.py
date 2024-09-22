@@ -69,7 +69,7 @@ if Chemotherapy == 1:
 
 
 ##Load the model and start prediction
-model = joblib.load('Gradient boosting_best model.pkl')
+model = joblib.load('Gradient_boosting_best_model.pkl')
 cut_off = 0.21830
 
 if st.button("Predict"):
