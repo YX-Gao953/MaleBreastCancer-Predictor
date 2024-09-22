@@ -1,5 +1,5 @@
 streamlit
-joblib
+joblib==1.1.0
 numpy
 pandas
 shap
