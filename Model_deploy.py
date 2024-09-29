@@ -92,7 +92,7 @@ if Chemotherapy == 'Yes':
 ##Load the model and start prediction
 model = joblib.load('Gradient_boosting_best_model.pkl')
 cut_off = 0.21830
-
+advice = ""
 if st.button("Predict"):
     if (input_df['M stage'].iloc[0] == 1 or
     (input_df['ERstatus'].iloc[0] != 'Positive' and input_df['PRstatus'].iloc[0] != 'Positive') or
