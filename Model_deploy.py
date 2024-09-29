@@ -62,19 +62,19 @@ if ERstatus == 'Positive':
     input_df['ERstatus'] = 1
 elif ERstatus == 'Negative':
     input_df['ERstatus'] = 0
-else: input_df['ERstatus'] = 0
+else: input_df['ERstatus'] = 999
 
 if PRstatus == 'Positive':
     input_df['PRstatus'] = 1
 elif PRstatus == 'Negative':
     input_df['PRstatus'] = 0
-else: input_df['PRstatus'] = 0
+else: input_df['PRstatus'] = 999
 
 if HER2status == 'Positive':
     input_df['HER2status'] = 1
 elif HER2status == 'Negative':
     input_df['HER2status'] = 0
-else: input_df['HER2status'] = 0
+else: input_df['HER2status'] = 999
 
 if Mstage == 1:
     input_df['Mstage'] = 1
@@ -117,8 +117,8 @@ cut_off = 0.21830
 advice = ""
 if st.button("Predict"):
     if (input_df_precondition['M stage'].iloc[0] == 1 or
-    (input_df_precondition['ERstatus'].iloc[0] != 'Positive' and input_df_precondition['PRstatus'].iloc[0] != 'Positive') or
-    input_df_precondition['HER2status'].iloc[0] != 'Negative'):
+    (input_df_precondition['ERstatus'].iloc[0] != 1 and input_df_precondition['PRstatus'].iloc[0] != 1) or
+    input_df_precondition['HER2status'].iloc[0] != 0):
         advice = '''The model is not available for this patient.
         It is indicated for male patients with ER and/or PR-positive, HER-2 negative early breast cancer.'''
     else:
