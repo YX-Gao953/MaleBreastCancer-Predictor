@@ -37,7 +37,7 @@ st.markdown("""
 # Define input
 ERstatus = st.selectbox("Estrogen receptor (ER) status:", options=['Positive', 'Negative', 'Unknown/Borderline'])
 PRstatus = st.selectbox("Progesterone receptor (PR) status:", options=['Positive', 'Negative', 'Unknown/Borderline'])
-HER2status = st.selectbox("Human epidermal growth factor receptor-2 (HER-2) status:", options=['Positive', 'Negative', 'Unknown/Borderline'])
+HER2status = st.selectbox("Human epidermal growth factor receptor-2 (HER-2) status:", options=['Negative', 'Positive', 'Unknown/Borderline'])
 Mstage = st.selectbox("M stage:", options=[0, 1])
 
 age = st.number_input("Age:", min_value=18, max_value=100)
@@ -107,9 +107,14 @@ if Chemotherapy == 'Yes':
     input_df['Chemotherapy=1'] = 1
 
 
-input_df_precondition = input_df.iloc[:, :4]
-input_df_variables = input_df.iloc[:, 4:] 
-
+precondition_columns = ['ERstatus', 'PRstatus', 'HER2status', 'M stage']
+variables_columns = ['Age', 'Histology=2', 'Grade=2', 'Grade=3', 
+                     'T stage=2', 'T stage=3', 'T stage=4', 
+                     'N stage=1', 'N stage=2', 'N stage=3', 
+                     'Breast surgery=1', 'Breast surgery=2', 
+                     'Chemotherapy=1']
+input_df_precondition = input_df[precondition_columns]
+input_df_variables = input_df[variables_columns]
 
 ##Load the model and start prediction
 model = joblib.load('Gradient_boosting_best_model.pkl')
