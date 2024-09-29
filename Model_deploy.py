@@ -57,36 +57,58 @@ columns = ['ERstatus', 'PRstatus', 'HER2status', 'M stage', 'Age', 'Histology=2'
 
 input_df = pd.DataFrame(np.zeros((1, len(columns))), columns=columns)
 
+# Fill the input data into empty dataframe
+if ERstatus == 'Positive':
+    input_df['ERstatus'] = 1
+elif ERstatus == 'Negative':
+    input_df['ERstatus'] = 0
+else: input_df['ERstatus'] = 0
+
+if PRstatus == 'Positive':
+    input_df['PRstatus'] = 1
+elif PRstatus == 'Negative':
+    input_df['PRstatus'] = 0
+else: input_df['PRstatus'] = 0
+
+if HER2status == 'Positive':
+    input_df['HER2status'] = 1
+elif HER2status == 'Negative':
+    input_df['HER2status'] = 0
+else: input_df['HER2status'] = 0
+
+if Mstage == 1:
+    input_df['Mstage'] = 1
+else: input_df['Mstage'] = 0
+
+input_df['Age'] = age
+if Histology == 'Other':
+    input_df['Histology=2'] = 1
+if Grade == 'II':
+    input_df['Grade=2'] = 1
+elif Grade == 'III/IV':
+    input_df['Grade=3'] = 1
+if Tstage == 2:
+    input_df['T stage=2'] = 1
+elif Tstage == 3:
+    input_df['T stage=3'] = 1
+elif Tstage == 4:
+    input_df['T stage=4'] = 1
+if Nstage == 1:
+    input_df['N stage=1'] = 1
+elif Nstage == 2:
+    input_df['N stage=2'] = 1
+elif Nstage == 3:
+    input_df['N stage=3'] = 1
+if Breastsurgery == 'Mastectomy':
+    input_df['Breast surgery=1'] = 1
+elif Breastsurgery == 'Partial mastectomy':
+    input_df['Breast surgery=2'] = 1
+if Chemotherapy == 'Yes':
+    input_df['Chemotherapy=1'] = 1
+
+
 input_df_precondition = input_df.iloc[:, :4]
 input_df_variables = input_df.iloc[:, 4:] 
-
-# Fill the input data into empty dataframe
-input_df_variables['Age'] = age
-if Histology == 'Other':
-    input_df_variables['Histology=2'] = 1
-if Grade == 'II':
-    input_df_variables['Grade=2'] = 1
-elif Grade == 'III/IV':
-    input_df_variables['Grade=3'] = 1
-if Tstage == 2:
-    input_df_variables['T stage=2'] = 1
-elif Tstage == 3:
-    input_df_variables['T stage=3'] = 1
-elif Tstage == 4:
-    input_df_variables['T stage=4'] = 1
-if Nstage == 1:
-    input_df_variables['N stage=1'] = 1
-elif Nstage == 2:
-    input_df_variables['N stage=2'] = 1
-elif Nstage == 3:
-    input_df_variables['N stage=3'] = 1
-if Breastsurgery == 'Mastectomy':
-    input_df_variables['Breast surgery=1'] = 1
-elif Breastsurgery == 'Partial mastectomy':
-    input_df_variables['Breast surgery=2'] = 1
-if Chemotherapy == 'Yes':
-    input_df_variables['Chemotherapy=1'] = 1
-
 
 
 ##Load the model and start prediction
@@ -94,9 +116,9 @@ model = joblib.load('Gradient_boosting_best_model.pkl')
 cut_off = 0.21830
 advice = ""
 if st.button("Predict"):
-    if (input_df['M stage'].iloc[0] == 1 or
-    (input_df['ERstatus'].iloc[0] != 'Positive' and input_df['PRstatus'].iloc[0] != 'Positive') or
-    input_df['HER2status'].iloc[0] != 'Negative'):
+    if (input_df_precondition['M stage'].iloc[0] == 1 or
+    (input_df_precondition['ERstatus'].iloc[0] != 'Positive' and input_df_precondition['PRstatus'].iloc[0] != 'Positive') or
+    input_df_precondition['HER2status'].iloc[0] != 'Negative'):
         advice = '''The model is not available for this patient.
         It is indicated for male patients with ER and/or PR-positive, HER-2 negative early breast cancer.'''
     else:
