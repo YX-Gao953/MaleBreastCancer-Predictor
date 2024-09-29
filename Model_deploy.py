@@ -51,7 +51,7 @@ Chemotherapy = st.selectbox("Chemotherapy:", options=['No', 'Yes'])
 
 
 ##Form the input data
-columns = ['ERstatus', 'PRstatus', 'HER2status', 'M stage', 'Age', 'Histology=2', 'Grade=2', 'Grade=3', 'T stage=2', 'T stage=3',
+columns = ['ERstatus', 'PRstatus', 'HER2status', 'Mstage', 'Age', 'Histology=2', 'Grade=2', 'Grade=3', 'T stage=2', 'T stage=3',
            'T stage=4', 'N stage=1', 'N stage=2', 'N stage=3', 'Breast surgery=1',
            'Breast surgery=2', 'Chemotherapy=1']
 
@@ -107,7 +107,7 @@ if Chemotherapy == 'Yes':
     input_df['Chemotherapy=1'] = 1
 
 
-precondition_columns = ['ERstatus', 'PRstatus', 'HER2status', 'M stage']
+precondition_columns = ['ERstatus', 'PRstatus', 'HER2status', 'Mstage']
 variables_columns = ['Age', 'Histology=2', 'Grade=2', 'Grade=3', 
                      'T stage=2', 'T stage=3', 'T stage=4', 
                      'N stage=1', 'N stage=2', 'N stage=3', 
@@ -121,7 +121,7 @@ model = joblib.load('Gradient_boosting_best_model.pkl')
 cut_off = 0.21830
 advice = ""
 if st.button("Predict"):
-    if (input_df_precondition['M stage'].iloc[0] == 1 or
+    if (input_df_precondition['Mstage'].iloc[0] == 1 or
     (input_df_precondition['ERstatus'].iloc[0] != 1 and input_df_precondition['PRstatus'].iloc[0] != 1) or
     input_df_precondition['HER2status'].iloc[0] != 0):
         advice = '''The model is not available for this patient.
