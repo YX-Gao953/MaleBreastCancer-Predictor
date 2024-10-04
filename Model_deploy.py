@@ -134,7 +134,7 @@ if st.button("Predict"):
         overall_survival_5y = (1 - risk_scores_5y) * 100
         if risk_scores_5y <= cut_off:
             advice = f'The prediction result is LOW-RISK. The 5-year overall survival rate is predicted to be {overall_survival_5y[0]:.1f}%.'
-        else if overall_survival_5y < 10:
+        elif overall_survival_5y < 10:
             advice = f'The prediction result is HIGH-RISK. The 5-year overall survival rate is predicted to be <10%.'
         else:
             advice = f'The prediction result is HIGH-RISK. The 5-year overall survival rate is predicted to be {overall_survival_5y[0]:.1f}%.'
