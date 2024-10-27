@@ -3,7 +3,6 @@ import joblib
 import numpy as np
 import pandas as pd
 import shap
-import math
 import matplotlib.pyplot as plt
 
 from sklearn import set_config
@@ -131,12 +130,10 @@ if st.button("Predict"):
         chf_funcs = model.predict_cumulative_hazard_function(input_df_variables.values, return_array=False)
         times = np.arange(12, 121, 6, dtype=int)
         risk_scores = np.row_stack([chf(times) for chf in chf_funcs])
-        risk_scores_5y = risk_scores[:, 8]
-        overall_survival_5y = math.exp(-risk_scores_5y) * 100
+        risk_scores_5y = risk_scores[:, 8][0]
+        overall_survival_5y = np.exp(-risk_scores_5y) * 100
         if risk_scores_5y <= cut_off:
-            advice = f'The prediction result is LOW-RISK. The 5-year overall survival rate is predicted to be {overall_survival_5y[0]:.1f}%.'
-        elif overall_survival_5y < 10:
-            advice = f'The prediction result is HIGH-RISK. The 5-year overall survival rate is predicted to be <10%.'
+            advice = f'The prediction result is LOW-RISK. The 5-year overall survival rate is predicted to be {overall_survival_5y:.1f}%.'
         else:
-            advice = f'The prediction result is HIGH-RISK. The 5-year overall survival rate is predicted to be {overall_survival_5y[0]:.1f}%.'
+            advice = f'The prediction result is HIGH-RISK. The 5-year overall survival rate is predicted to be {overall_survival_5y:.1f}%.'
 st.write(advice)
