@@ -3,6 +3,7 @@ import joblib
 import numpy as np
 import pandas as pd
 import shap
+import math
 import matplotlib.pyplot as plt
 
 from sklearn import set_config
@@ -131,7 +132,7 @@ if st.button("Predict"):
         times = np.arange(12, 121, 6, dtype=int)
         risk_scores = np.row_stack([chf(times) for chf in chf_funcs])
         risk_scores_5y = risk_scores[:, 8]
-        overall_survival_5y = (1 - risk_scores_5y) * 100
+        overall_survival_5y = math.exp(-risk_scores_5y) * 100
         if risk_scores_5y <= cut_off:
             advice = f'The prediction result is LOW-RISK. The 5-year overall survival rate is predicted to be {overall_survival_5y[0]:.1f}%.'
         elif overall_survival_5y < 10:
