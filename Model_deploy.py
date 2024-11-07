@@ -104,7 +104,7 @@ elif Breastsurgery == 'Partial mastectomy':
     input_df_nochemo['Breast surgery=2'] = 1
 
 input_df_chemo = input_df_nochemo
-input_df_chemo = input_df_chemo['Chemotherapy=1'] = 1
+input_df_chemo['Chemotherapy=1'] = 1
 
 precondition_columns = ['ERstatus', 'PRstatus', 'HER2status', 'Mstage']
 variables_columns = ['Age', 'Histology=2', 'Grade=2', 'Grade=3', 
