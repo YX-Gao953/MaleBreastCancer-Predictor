@@ -27,7 +27,7 @@ st.markdown("""
     
     Please enter the patient data in the input boxes below.
     
-    Note: The first four variables assess the preconditions. If the requirements of the model are not met, you will receive a notification.
+    Note: The first four variables assess the preconditions. If the requirements of the model are not met, you will receive a corresponding notification.
      
     This model is intended to ASSIST physicians in making clinical decisions ONLY.
 """)
@@ -138,11 +138,11 @@ if st.button("Predict"):
         risk_scores_5y_chemo = risk_scores_chemo[:, 8][0]
         overall_survival_5y_chemo = np.exp(-risk_scores_5y_chemo) * 100
         if risk_scores_5y_nochemo <= cut_off:
-            advice = (f'''The prediction result is LOW-RISK. It suggests NO significant overall survival benefit from chemotherapy.\n
-            f"WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.\n
-            f"With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.''')
+            advice = ('The prediction result is LOW-RISK. It suggests NO significant overall survival benefit from chemotherapy.\n'
+            f'WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.\n'
+            f'With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.')
         else:
-            advice = (f'''The prediction result is HIGH-RISK. It suggests a significant overall survival benefit from chemotherapy.\n
-            WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.\n
-            With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.''')
-st.markdown(advice)
+            advice = ('The prediction result is HIGH-RISK. It suggests a significant overall survival benefit from chemotherapy.\n'
+            f'WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.\n'
+            f'With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.')
+st.write(advice)
