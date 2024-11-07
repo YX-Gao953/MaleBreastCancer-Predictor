@@ -140,7 +140,11 @@ if st.button("Predict"):
         risk_scores_5y_chemo = risk_scores_chemo[:, 8][0]
         overall_survival_5y_chemo = np.exp(-risk_scores_5y_chemo) * 100
         if risk_scores_5y_nochemo <= cut_off:
-            advice = f'''The prediction result is LOW-RISK. It suggests NO significant overall survival benefit from chemotherapy.\nWITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.\nWith chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.'''
+            advice = f'''The prediction result is LOW-RISK. It suggests NO significant overall survival benefit from chemotherapy.
+            WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.
+            With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.'''
         else:
-            advice = f'''The prediction result is HIGH-RISK. It suggests significant overall survival benefit from chemotherapy.\nWITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.\nWith chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.'''
+            advice = f'''The prediction result is HIGH-RISK. It suggests a significant overall survival benefit from chemotherapy.
+            WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.
+            With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.'''
 st.write(advice)
