@@ -23,15 +23,13 @@ st.title("Hormone Receptor-Positive Early Male Breast Cancer Risk Predictor")
 
 #Add description
 st.markdown("""
-    This model is designed to predict the 5-year overall survival rate for male patients with hormone receptor-positive early breast cancer and to stratify based on the prediction results. 
+    This model is designed to predict the 5-year overall survival rate for men with hormone receptor-positive, HER-2 negative early breast cancer and to stratify based on the prediction results. 
     
     Please enter the patient data in the input boxes below.
     
-    Note: Although HER-2 status is not considered when constructing the model, it is still recommended for use only in predicting HER-2 negative patients. The first four variables assess the preconditions; if the requirements of the model are not met, you will receive a corresponding notification.
-    
-    If the prediction result indicates LOW-RISK, this suggests that chemotherapy may not improve the patient's prognosis. Therefore, chemotherapy omission may be considered.
-            
-    This model is intended to ASSIST physicians in making judgments.
+    Note: The first four variables assess the preconditions. If the requirements of the model are not met, you will receive a corresponding notification.
+     
+    This model is intended to ASSIST physicians in making clinical decisions ONLY.
 """)
 
 # Define input
@@ -140,11 +138,11 @@ if st.button("Predict"):
         risk_scores_5y_chemo = risk_scores_chemo[:, 8][0]
         overall_survival_5y_chemo = np.exp(-risk_scores_5y_chemo) * 100
         if risk_scores_5y_nochemo <= cut_off:
-            advice = f'''The prediction result is LOW-RISK. It suggests NO significant overall survival benefit from chemotherapy.
-            WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.
-            With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.'''
+            advice = (f"The prediction result is LOW-RISK. It suggests NO significant overall survival benefit from chemotherapy.\n"
+            f"WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.\n"
+            f"With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.")
         else:
-            advice = f'''The prediction result is HIGH-RISK. It suggests a significant overall survival benefit from chemotherapy.
-            WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.
-            With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.'''
+            advice = (f"The prediction result is HIGH-RISK. It suggests a significant overall survival benefit from chemotherapy.\n"
+            f"WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.\n"
+            f"With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.")
 st.write(advice)
