@@ -145,4 +145,4 @@ if st.button("Predict"):
             advice = (f"The prediction result is HIGH-RISK. It suggests a significant overall survival benefit from chemotherapy.\n"
             f"WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.\n"
             f"With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.")
-st.write(advice)
+st.markdown(advice)
