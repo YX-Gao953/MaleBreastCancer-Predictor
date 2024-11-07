@@ -27,7 +27,7 @@ st.markdown("""
     
     Please enter the patient data in the input boxes below.
     
-    Note: The first four variables assess the preconditions. If the requirements of the model are not met, you will receive a notification.
+    Note: The first four variables assess the preconditions. If the requirements of the model are not met, you will receive a corresponding notification.
      
     This model is intended to ASSIST physicians in making clinical decisions ONLY.
 """)
@@ -103,7 +103,7 @@ elif Breastsurgery == 'Partial mastectomy':
 if Chemotherapy == 1:
     input_df_nochemo['Chemotherapy=1'] = 1
 
-input_df_chemo = input_df_nochemo
+input_df_chemo = input_df_nochemo.copy()
 input_df_chemo['Chemotherapy=1'] = 1
 
 precondition_columns = ['ERstatus', 'PRstatus', 'HER2status', 'Mstage']
