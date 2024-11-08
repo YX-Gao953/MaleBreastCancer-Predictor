@@ -27,7 +27,7 @@ st.markdown("""
     
     Please enter the patient data in the input boxes below.
     
-    Note: The first four variables assess the preconditions. If the requirements of the model are not met, you will receive a corresponding notification.
+    Note: The first four variables assess the preconditions. If the requirements of the model are not met, you will receive a notification.
      
     This model is intended to ASSIST physicians in making clinical decisions ONLY.
 """)
