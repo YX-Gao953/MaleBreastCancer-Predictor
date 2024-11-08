@@ -119,7 +119,9 @@ input_df_chemo_variables = input_df_chemo[variables_columns]
 ##Load the model and start prediction
 model = joblib.load('Gradient_boosting_best_model.pkl')
 cut_off = 0.21830
-advice = ""
+advice_1 = ""
+advice_2 = ""
+advice_3 = ""
 if st.button("Predict"):
     if (input_df_precondition['Mstage'].iloc[0] == 1 or
     (input_df_precondition['ERstatus'].iloc[0] != 1 and input_df_precondition['PRstatus'].iloc[0] != 1) or
