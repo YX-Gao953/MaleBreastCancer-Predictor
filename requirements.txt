@@ -1,6 +1,6 @@
 streamlit
 joblib
-numpy
+numpy==1.26.0
 pandas
 shap
 matplotlib
