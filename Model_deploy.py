@@ -13,17 +13,17 @@ from sklearn.pipeline import Pipeline
 import pickle
 
 from sksurv.preprocessing import OneHotEncoder, encode_categorical
-from sksurv.ensemble import GradientBoostingSurvivalAnalysis
+from sksurv.ensemble import ComponentwiseGradientBoostingSurvivalAnalysis
 
 
 
 ##Define user input
 # Streamlit user intersurface
-st.title("Hormone Receptor-Positive Early Male Breast Cancer Risk Predictor")
+st.title("Luminal Early Male Breast Cancer Risk Predictor")
 
 #Add description
 st.markdown("""
-    This model is designed to predict the 5-year overall survival rate for men with hormone receptor-positive, HER-2 negative early breast cancer and to stratify based on the prediction results. 
+    This model is designed to predict the 5-year overall survival rate for men with luminal early breast cancer and to stratify based on the prediction results. 
     
     Please enter the patient data in the input boxes below.
     
@@ -38,19 +38,21 @@ PRstatus = st.selectbox("Progesterone receptor (PR) status:", options=['Positive
 HER2status = st.selectbox("Human epidermal growth factor receptor-2 (HER-2) status:", options=['Negative', 'Positive', 'Unknown/Borderline'])
 Mstage = st.selectbox("M stage:", options=[0, 1])
 
-age = st.number_input("Age:", min_value=18, max_value=100)
+age = st.number_input("Age:", min_value=18, max_value=90)
 Tstage = st.selectbox("T stage:", options=[1, 2, 3, 4])
 Nstage = st.selectbox("N stage:", options=[0, 1, 2, 3])
 Histology = st.selectbox("Histology:", options=['Ductal', 'Other'])
 Grade = st.selectbox("Grade:", options=['I', 'II', 'III/IV'])
 Breastsurgery = st.selectbox("Breast surgery:", options=['No', 'Mastectomy', 'Partial mastectomy'])
+Radiotherapy = st.selectbox("Radiotherapy:", options=['No', 'Yes'])
 Chemotherapy = 0
 
 
 ##Form the input data
 columns = ['ERstatus', 'PRstatus', 'HER2status', 'Mstage', 'Age', 'Histology=2', 'Grade=2', 'Grade=3', 'T stage=2', 'T stage=3',
-           'T stage=4', 'N stage=1', 'N stage=2', 'N stage=3', 'Breast surgery=1',
-           'Breast surgery=2', 'Chemotherapy=1']
+           'T stage=4', 'N stage=1', 'N stage=2', 'N stage=3', 'Breast surgery=1', 'Breast surgery=2', 
+           'Radiotherapy=1',
+           'Chemotherapy=1']
 
 input_df_nochemo = pd.DataFrame(np.zeros((1, len(columns))), columns=columns)
 
@@ -100,6 +102,8 @@ if Breastsurgery == 'Mastectomy':
     input_df_nochemo['Breast surgery=1'] = 1
 elif Breastsurgery == 'Partial mastectomy':
     input_df_nochemo['Breast surgery=2'] = 1
+if Radiotherapy == 1:
+    input_df_nochemo['Radiotherapy=1'] = 1
 if Chemotherapy == 1:
     input_df_nochemo['Chemotherapy=1'] = 1
 
@@ -111,14 +115,16 @@ variables_columns = ['Age', 'Histology=2', 'Grade=2', 'Grade=3',
                      'T stage=2', 'T stage=3', 'T stage=4', 
                      'N stage=1', 'N stage=2', 'N stage=3', 
                      'Breast surgery=1', 'Breast surgery=2', 
+                     'Radiotherapy=1',
                      'Chemotherapy=1']
 input_df_precondition = input_df_nochemo[precondition_columns]
 input_df_nochemo_variables = input_df_nochemo[variables_columns]
 input_df_chemo_variables = input_df_chemo[variables_columns]
 
 ##Load the model and start prediction
-model = joblib.load('Gradient_boosting_best_model.pkl')
-cut_off = 0.21830
+model = joblib.load('CwGB_best_model.pkl')
+cut_off_1 = 0.1797
+cut_off_2 = 0.3371
 advice_1 = ""
 advice_2 = ""
 advice_3 = ""
@@ -141,8 +147,12 @@ if st.button("Predict"):
         risk_scores_chemo = np.row_stack([chf(times) for chf in chf_funcs_chemo])
         risk_scores_5y_chemo = risk_scores_chemo[:, 8][0]
         overall_survival_5y_chemo = np.exp(-risk_scores_5y_chemo) * 100
-        if risk_scores_5y_nochemo <= cut_off:
+        if risk_scores_5y_nochemo <= cut_off_1:
             advice_1 = ("The prediction result is LOW-RISK. It suggests NO significant overall survival benefit from chemotherapy.")
+            advice_2 = (f"WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.")
+            advice_3 = (f"With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.")
+        elif risk_scores_5y_nochemo <= cut_off_2:
+            advice_1 = ("The prediction result is INTERMEDIATE-RISK.")
             advice_2 = (f"WITHOUT chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_nochemo:.1f}%.")
             advice_3 = (f"With chemotherapy, the 5-year overall survival rate is predicted to be {overall_survival_5y_chemo:.1f}%.")
         else:
