@@ -162,8 +162,9 @@ if st.button("Predict"):
     if (input_df_precondition['Mstage'].iloc[0] == 1 or
     (input_df_precondition['ERstatus'].iloc[0] != 1 and input_df_precondition['PRstatus'].iloc[0] != 1) or
     input_df_precondition['HER2status'].iloc[0] != 0):
-        advice = '''The model is not available for this patient.
-        It is indicated for men with ER and/or PR-positive, HER-2 negative early breast cancer.'''
+        advice_1 = "Sorry, the model is not available for this patient."
+        advice_2 = "It is indicated for men with ER and/or PR-positive, HER-2 negative early breast cancer."
+        advice_3 = "Please select a proper candidate."
     else:
         chf_funcs_nochemo = model.predict_cumulative_hazard_function(input_df_nochemo_variables.values, return_array=False)
         chf_funcs_chemo = model.predict_cumulative_hazard_function(input_df_chemo_variables.values, return_array=False)
