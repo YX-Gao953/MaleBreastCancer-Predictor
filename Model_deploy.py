@@ -49,12 +49,19 @@ Chemotherapy = 0
 
 
 ##Form the input data
-columns = ['ERstatus', 'PRstatus', 'HER2status', 'Mstage', 'Age', 'Histology=2', 'Grade=2', 'Grade=3', 'T stage=2', 'T stage=3',
-           'T stage=4', 'N stage=1', 'N stage=2', 'N stage=3', 'Breast surgery=1', 'Breast surgery=2', 
-           'Radiotherapy=1',
-           'Chemotherapy=1']
+columns = ['ERstatus', 'PRstatus', 'HER2status', 'Mstage', 
+           'Age', 
+           'Histology=1', 'Histology=2', 
+           'Grade=1', 'Grade=2', 'Grade=3', 
+           'T stage=1', 'T stage=2', 'T stage=3', 'T stage=4', 
+           'N stage=0', 'N stage=1', 'N stage=2', 'N stage=3', 
+           'Breast surgery=0', 'Breast surgery=1', 'Breast surgery=2', 
+           'Radiotherapy=0', 'Radiotherapy=1',
+           'Chemotherapy=0', 'Chemotherapy=1']
 
 input_df_nochemo = pd.DataFrame(np.zeros((1, len(columns))), columns=columns)
+input_df_nochemo['Chemotherapy=0'] = 1
+input_df_nochemo['Chemotherapy=1'] = 0
 
 # Fill the input data into empty dataframe
 if ERstatus == 'Positive':
@@ -79,44 +86,67 @@ if Mstage == 1:
     input_df_nochemo['Mstage'] = 1
 else: input_df_nochemo['Mstage'] = 0
 
+
 input_df_nochemo['Age'] = age
-if Histology == 'Other':
+if Histology == 'Ductal':
+    input_df_nochemo['Histology=1'] = 1
+elif Histology == 'Other':
     input_df_nochemo['Histology=2'] = 1
-if Grade == 'II':
+
+if Grade == 'I':
+    input_df_nochemo['Grade=1'] = 1
+elif Grade == 'II':
     input_df_nochemo['Grade=2'] = 1
 elif Grade == 'III/IV':
     input_df_nochemo['Grade=3'] = 1
-if Tstage == 2:
+
+if Tstage == 1:
+    input_df_nochemo['T stage=1'] = 1
+elif Tstage == 2:
     input_df_nochemo['T stage=2'] = 1
 elif Tstage == 3:
     input_df_nochemo['T stage=3'] = 1
 elif Tstage == 4:
     input_df_nochemo['T stage=4'] = 1
-if Nstage == 1:
+
+if Nstage == 0:
+    input_df_nochemo['N stage=0'] = 1
+elif Nstage == 1:
     input_df_nochemo['N stage=1'] = 1
 elif Nstage == 2:
     input_df_nochemo['N stage=2'] = 1
 elif Nstage == 3:
     input_df_nochemo['N stage=3'] = 1
-if Breastsurgery == 'Mastectomy':
+
+if Breastsurgery == 'No':
+    input_df_nochemo['Breast surgery=0'] = 1
+elif Breastsurgery == 'Mastectomy':
     input_df_nochemo['Breast surgery=1'] = 1
 elif Breastsurgery == 'Partial mastectomy':
     input_df_nochemo['Breast surgery=2'] = 1
-if Radiotherapy == 1:
+
+if Radiotherapy == 0:
+    input_df_nochemo['Radiotherapy=0'] = 1
+elif Radiotherapy == 1:
     input_df_nochemo['Radiotherapy=1'] = 1
-if Chemotherapy == 1:
-    input_df_nochemo['Chemotherapy=1'] = 1
+
+#if Chemotherapy == 0:
+#    input_df_nochemo['Chemotherapy=0'] = 1
+#elif Chemotherapy == 1:
+#    input_df_nochemo['Chemotherapy=1'] = 1
 
 input_df_chemo = input_df_nochemo.copy()
+input_df_chemo['Chemotherapy=0'] = 0
 input_df_chemo['Chemotherapy=1'] = 1
 
 precondition_columns = ['ERstatus', 'PRstatus', 'HER2status', 'Mstage']
-variables_columns = ['Age', 'Histology=2', 'Grade=2', 'Grade=3', 
-                     'T stage=2', 'T stage=3', 'T stage=4', 
-                     'N stage=1', 'N stage=2', 'N stage=3', 
-                     'Breast surgery=1', 'Breast surgery=2', 
-                     'Radiotherapy=1',
-                     'Chemotherapy=1']
+variables_columns = ['Age', 'Histology=1', 'Histology=2', 
+                     'Grade=1', 'Grade=2', 'Grade=3', 
+                     'T stage=1', 'T stage=2', 'T stage=3', 'T stage=4', 
+                     'N stage=0', 'N stage=1', 'N stage=2', 'N stage=3', 
+                     'Breast surgery=0', 'Breast surgery=1', 'Breast surgery=2', 
+                     'Radiotherapy=0', 'Radiotherapy=1',
+                     'Chemotherapy=0', 'Chemotherapy=1']
 input_df_precondition = input_df_nochemo[precondition_columns]
 input_df_nochemo_variables = input_df_nochemo[variables_columns]
 input_df_chemo_variables = input_df_chemo[variables_columns]
