@@ -135,7 +135,7 @@ input_df_chemo = input_df_nochemo.copy()
 input_df_chemo['Chemotherapy=0'] = 0
 input_df_chemo['Chemotherapy=1'] = 1
 
-precondition_columns = ['ERstatus', 'PRstatus', 'HER2status', 'Mstage', 'Breast surgery']
+precondition_columns = ['ERstatus', 'PRstatus', 'HER2status', 'Mstage', 'Breast_surgery']
 variables_columns = ['Age', 'Histology=1', 'Histology=2', 
                      'Grade=1', 'Grade=2', 'Grade=3', 
                      'T stage=1', 'T stage=2', 'T stage=3', 'T stage=4', 
