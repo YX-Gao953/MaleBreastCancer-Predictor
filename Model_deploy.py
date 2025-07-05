@@ -156,7 +156,7 @@ if st.button("Predict"):
     ):
         st.write(advice_1)
         st.write(advice_2)
-    elif input_df_precondition['Breast_surgery'] != 1:
+    elif input_df_precondition['Breast_surgery'].iloc[0] != 1:
         st.write(advice_1)
         st.write(advice_3)
     else:
