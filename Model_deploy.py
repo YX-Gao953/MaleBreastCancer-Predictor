@@ -140,7 +140,7 @@ input_df_chemo_variables = input_df_chemo[variables_columns]
 
 ##Load the model and start prediction
 model = joblib.load('CwGB_best_model.pkl')
-cut_off = 3.14159
+cut_off = 0.18765
 
 advice_1 = "Sorry, the model is not available for this patient."
 advice_2 = "Only male patients with ER and/or PR-positive, HER-2 negative early breast cancer are indicated."
