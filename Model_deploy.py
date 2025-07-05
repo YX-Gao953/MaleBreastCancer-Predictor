@@ -41,23 +41,21 @@ HER2status = st.selectbox("Human epidermal growth factor receptor-2 (HER-2) stat
 Mstage = st.selectbox("M stage:", options=[0, 1])
 Breast_surgery = st.selectbox("Breast surgery:", options=['Not performed (e.g. contraindicated/refused)', 'Scheduled/Performed', 'Unknown'])
 
-age = st.number_input("Age:", min_value=18, max_value=90)
+age = st.number_input("Age (years, 18 ~ 90):", min_value=18, max_value=90)
 Tstage = st.selectbox("T stage:", options=[1, 2, 3, 4])
 Nstage = st.selectbox("N stage:", options=[0, 1, 2, 3])
 Histology = st.selectbox("Histology:", options=['Ductal', 'Other'])
 Grade = st.selectbox("Grade:", options=['I', 'II', 'III/IV'])
-Radiotherapy = st.selectbox("Radiotherapy:", options=['No', 'Yes'])
 Chemotherapy = 0
 
 
 ##Process the input data
-columns = ['ERstatus', 'PRstatus', 'HER2status', 'Mstage', 'Breast_surgery'
+columns = ['ERstatus', 'PRstatus', 'HER2status', 'Mstage', 'Breast_surgery',
            'Age', 
            'Histology=1', 'Histology=2', 
            'Grade=1', 'Grade=2', 'Grade=3', 
            'T stage=1', 'T stage=2', 'T stage=3', 'T stage=4', 
            'N stage=0', 'N stage=1', 'N stage=2', 'N stage=3', 
-           'Radiotherapy=0', 'Radiotherapy=1',
            'Chemotherapy=0', 'Chemotherapy=1']
 
 input_df_nochemo = pd.DataFrame(np.zeros((1, len(columns))), columns=columns)
@@ -125,11 +123,6 @@ elif Nstage == 2:
 elif Nstage == 3:
     input_df_nochemo['N stage=3'] = 1
 
-if Radiotherapy == 0:
-    input_df_nochemo['Radiotherapy=0'] = 1
-elif Radiotherapy == 1:
-    input_df_nochemo['Radiotherapy=1'] = 1
-
 
 input_df_chemo = input_df_nochemo.copy()
 input_df_chemo['Chemotherapy=0'] = 0
@@ -140,7 +133,6 @@ variables_columns = ['Age', 'Histology=1', 'Histology=2',
                      'Grade=1', 'Grade=2', 'Grade=3', 
                      'T stage=1', 'T stage=2', 'T stage=3', 'T stage=4', 
                      'N stage=0', 'N stage=1', 'N stage=2', 'N stage=3', 
-                     'Radiotherapy=0', 'Radiotherapy=1',
                      'Chemotherapy=0', 'Chemotherapy=1']
 input_df_precondition = input_df_nochemo[precondition_columns]
 input_df_nochemo_variables = input_df_nochemo[variables_columns]
@@ -148,7 +140,7 @@ input_df_chemo_variables = input_df_chemo[variables_columns]
 
 ##Load the model and start prediction
 model = joblib.load('CwGB_best_model.pkl')
-cut_off = 0.18765
+cut_off = 3.14159
 
 advice_1 = "Sorry, the model is not available for this patient."
 advice_2 = "Only male patients with ER and/or PR-positive, HER-2 negative early breast cancer are indicated."
