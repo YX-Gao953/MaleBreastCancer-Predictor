@@ -165,11 +165,11 @@ if st.button("Predict"):
 
         if risk_scores_5y <= 0.2285:
             advice_1 = (f"The prediction result is LOW-RISK.")
-            advice_2 = (f"It suggests NO significant overall survival benefit from chemotherapy.")
+            advice_2 = (f"It suggests NO significant overall survival benefit associated with chemotherapy.")
             advice_3 = (f"According to the training set of this model, the 5-year overall survival rate of LOW-RISK group is 87.0%.")
         else:
             advice_1 = (f"The prediction result is HIGH-RISK.")
-            advice_2 = (f"In HIGH-RISK group, patients who received chemotherapy showed significantly higher overall survival rate compared to those who did not.")
+            advice_2 = (f"In the HIGH-RISK group, patients who received chemotherapy demonstrated a significantly higher overall survival rate compared to those who did not receive chemotherapy.")
             advice_3 = (f"According to the training set of this model, the 5-year overall survival rate of HIGH-RISK group is 65.5%.")
 st.write(advice_1)
 st.write(advice_2)
