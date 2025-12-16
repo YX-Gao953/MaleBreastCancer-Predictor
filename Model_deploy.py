@@ -155,7 +155,7 @@ if st.button("Predict"):
         advice_2 = "The breast radical surgery must be planned or done."
         advice_3 = "Please select a proper candidate."
     else:
-        chf_funcs = model.predict_cumulative_hazard_function(input_df_variables.values, return_array=False)
+        chf_funcs = model.predict_cumulative_hazard_function(input_df_variables, return_array=False)
 
         times = np.arange(12, 121, 6, dtype=int)
 
