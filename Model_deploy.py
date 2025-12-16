@@ -37,13 +37,14 @@ ERstatus = st.selectbox("Estrogen receptor (ER) status:", options=['Positive', '
 PRstatus = st.selectbox("Progesterone receptor (PR) status:", options=['Positive', 'Negative', 'Unknown/Borderline'])
 HER2status = st.selectbox("Human epidermal growth factor receptor-2 (HER-2) status:", options=['Negative', 'Positive', 'Unknown/Borderline'])
 Mstage = st.selectbox("M stage:", options=[0, 1])
+Breastsurgery = st.selectbox("Breast surgery:", options=['No (Refused/Contraindicated)', 'Planned', 'Done (Mastectomy, with or without Reconstruction)', 'Done (Partial Mastectomy)'])
 
 age = st.number_input("Age (supports 18-90y only):", min_value=18, max_value=90)
 Tstage = st.selectbox("T stage:", options=[1, 2, 3, 4])
 Nstage = st.selectbox("N stage:", options=[0, 1, 2, 3])
 Histology = st.selectbox("Histology:", options=['Ductal', 'Other'])
 Grade = st.selectbox("Grade:", options=['I', 'II', 'III/IV'])
-Breastsurgery = st.selectbox("Breast surgery:", options=['No (Refused/Contraindicated)', 'Planned', 'Done (Mastectomy, with or without Reconstruction)', 'Done (Partial Mastectomy)'])
+
 
 
 
@@ -64,19 +65,19 @@ if ERstatus == 'Positive':
     input_df['ERstatus'] = 1
 elif ERstatus == 'Negative':
     input_df['ERstatus'] = 0
-else: input_df['ERstatus'] = 0
+else: input_df['ERstatus'] = 999
 
 if PRstatus == 'Positive':
     input_df['PRstatus'] = 1
 elif PRstatus == 'Negative':
     input_df['PRstatus'] = 0
-else: input_df['PRstatus'] = 0
+else: input_df['PRstatus'] = 999
 
 if HER2status == 'Positive':
     input_df['HER2status'] = 1
 elif HER2status == 'Negative':
     input_df['HER2status'] = 0
-else: input_df['HER2status'] = 0
+else: input_df['HER2status'] = 999
 
 if Mstage == 1:
     input_df['Mstage'] = 1
@@ -134,6 +135,7 @@ variables_columns = ['Age', 'Histology=1', 'Histology=2',
                      'N stage=0', 'N stage=1', 'N stage=2', 'N stage=3']
 input_df_precondition = input_df[precondition_columns]
 input_df_variables = input_df[variables_columns]
+input_df_variables = input_df_variables.applymap(lambda x: int(x) if isinstance(x, (int, float)) else x)
 
 ##Load the model and start prediction
 model = joblib.load('CwGB_best_model.pkl')
