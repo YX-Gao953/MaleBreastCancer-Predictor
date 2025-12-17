@@ -37,7 +37,7 @@ ERstatus = st.selectbox("Estrogen receptor (ER) status:", options=['Positive', '
 PRstatus = st.selectbox("Progesterone receptor (PR) status:", options=['Positive', 'Negative', 'Unknown/Borderline'])
 HER2status = st.selectbox("Human epidermal growth factor receptor-2 (HER-2) status:", options=['Negative', 'Positive', 'Unknown/Borderline'])
 Mstage = st.selectbox("M stage:", options=[0, 1])
-Breastsurgery = st.selectbox("Breast surgery:", options=['No (Refused/Contraindicated)', 'Planned', 'Done (Mastectomy, with or without Reconstruction)', 'Done (Partial Mastectomy)'])
+Breastsurgery = st.selectbox("Breast definitive surgery:", options=['Yes (Planned/Done)', 'No (Refused/Contraindicated)'])
 
 age = st.number_input("Age (supports 18-90y only):", min_value=18, max_value=90)
 Tstage = st.selectbox("T stage:", options=[1, 2, 3, 4])
@@ -85,13 +85,8 @@ else: input_df['Mstage'] = 0
 
 if Breastsurgery == 'No (Refused/Contraindicated)':
     input_df['Breastsurgery'] = 0
-elif Breastsurgery == 'Planned':
+elif Breastsurgery == 'Yes (Planned/Done)':
     input_df['Breastsurgery'] = 1
-elif Breastsurgery == 'Done (Mastectomy, with or without Reconstruction)':
-    input_df['Breastsurgery'] = 2
-elif Breastsurgery == 'Done (Partial Mastectomy)':
-    input_df['Breastsurgery'] = 3
-
 
 
 # Predictors
@@ -152,7 +147,7 @@ if st.button("Predict"):
         advice_3 = "Please select a proper candidate."
     elif input_df_precondition['Breastsurgery'].iloc[0] == 0 :
         advice_1 = "Sorry, the model is not available for this patient."
-        advice_2 = "The breast radical surgery must be planned or done."
+        advice_2 = "The breast definitive surgery must be planned or done."
         advice_3 = "Please select a proper candidate."
     else:
         chf_funcs = model.predict_cumulative_hazard_function(input_df_variables, return_array=False)
